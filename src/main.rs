@@ -75,33 +75,33 @@ impl TrieNode{
         }
     }
 
-    fn suggestion_rec(&mut self, mut curr_prefix: &str) {
+    fn suggestion_rec(&mut self, mut curr_prefix: String) {
         let root = self;
 
         if root.is_word_end{
-            println!("{}", curr_prefix);
+            println!("{}", &curr_prefix);
         }
 
         if root.last_node(){
             return;
         }
-        let mut prefixed = curr_prefix.to_string();
+        //let mut prefixed = curr_prefix.to_string();
         for i in (b'A'..=b'z'){
             if root.children.contains_key(&(i as char)){
-                prefixed.push(i as char);
-                root.children.get_mut(&(i as char)).unwrap().suggestion_rec(&prefixed);
-                prefixed.to_string().pop();
+                curr_prefix.push(i as char);
+                root.children.get_mut(&(i as char)).unwrap().suggestion_rec(curr_prefix.clone());
+                curr_prefix.pop();
             }
 
         }
     }
 
     fn last_node(&mut self) ->bool{
-        for i in (b'A'..=b'z'){
-            if self.children.contains_key(&(i as char)){
+
+            if !self.children.is_empty(){
                 return false;
             }
-        }
+
         return true;
     }
 
@@ -122,7 +122,7 @@ impl TrieNode{
             return;
         }
         if !is_last {
-            root.suggestion_rec(prefix);
+            root.suggestion_rec(prefix.parse().unwrap());
             return;
         }
     }
@@ -138,8 +138,12 @@ fn main() {
     obj.insert(String::from("heli"));
     obj.insert(String::from("hell"));
     //println!("{}", obj.start_with(String::from("hel")));
-    let stringer="hel";
-    let v = obj.root.collect_all_matches(stringer);
+    let test_string="hel";
+    let test_string1 = "NoEntryAvailableTest";
+    let v = obj.root.collect_all_matches(test_string);
+    println!("+++++++++++++++++");
+    obj.root.collect_all_matches(test_string1);
+
     //println!("{:?}",v);
 
 
