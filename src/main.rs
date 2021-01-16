@@ -1,5 +1,4 @@
 use std::collections::HashMap;
-use std::ops::{Deref, Index};
 
 
 struct Trie {
@@ -30,7 +29,7 @@ impl Trie{
         }
     }
 
-
+    #[allow(dead_code)]
     fn search(&mut self, word: String) -> bool{
         let mut current = &mut self.root;
         for level in word.chars(){
@@ -42,7 +41,7 @@ impl Trie{
         current.is_word_end
     }
 
-
+    #[allow(dead_code)]
     fn start_with(&mut self, prefix: String) -> bool {
         let mut current = &mut self.root;
         for level in prefix.chars(){
@@ -86,7 +85,7 @@ impl TrieNode{
             return;
         }
         //let mut prefixed = curr_prefix.to_string();
-        for i in (b'A'..=b'z'){
+        for i in b'A'..=b'z'{
             if root.children.contains_key(&(i as char)){
                 curr_prefix.push(i as char);
                 root.children.get_mut(&(i as char)).unwrap().suggestion_rec(curr_prefix.clone());
@@ -117,7 +116,7 @@ impl TrieNode{
         let is_word = root.is_word_end;
         let is_last = root.last_node();
 
-        if (is_word&&is_last){
+        if is_word&&is_last{
             println!("{}",prefix);
             return;
         }
@@ -140,8 +139,8 @@ fn main() {
     //println!("{}", obj.start_with(String::from("hel")));
     let test_string="hel";
     let test_string1 = "NoEntryAvailableTest";
-    let v = obj.root.collect_all_matches(test_string);
-    println!("+++++++++++++++++");
+    obj.root.collect_all_matches(test_string);
+    println!("++++++++++++++++++++++++++++++++++++++++++");
     obj.root.collect_all_matches(test_string1);
 
     //println!("{:?}",v);
